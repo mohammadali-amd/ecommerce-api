@@ -1,0 +1,18 @@
+# Ignore Node.js modules
+/node_modules
+
+# Ignore environment configuration files
+/.env
+
+# Ignore IDE files
+/.idea/
+/.vscode/
+
+# Ignore any local files or configurations
+/.env.local
+
+# Ignore macOS system files
+.DS_Store
+
+# Ignore npm lock files
+/uploads
