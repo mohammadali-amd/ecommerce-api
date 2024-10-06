@@ -17,7 +17,7 @@ connectDB() // Connect to MongoDB
 
 const app = express()
 app.use(cors({
-   origin: 'https://flashbaz.liara.run',
+   origin: process.env.NODE_ENV === "development" ? "http://localhost:3000" : "https://flashbaz.liara.run",
    credentials: true
 }));
 
