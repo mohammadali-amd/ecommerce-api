@@ -101,6 +101,7 @@ export const createProducts = asyncHandler(async (req, res) => {
       isAmazingOffer: false,
       user: req.user._id,
       image: '/image/sample.jpg',
+      additionalImages: [''],
       brand: 'Sample brand',
       category: {
          name: 'sample',
@@ -123,7 +124,7 @@ export const createProducts = asyncHandler(async (req, res) => {
 // @route PUT /api/products/:id
 // @access Private/Admin
 export const updateProduct = asyncHandler(async (req, res) => {
-   const { name, price, priceWithOff, isAmazingOffer, discount, image, brand, category, subcategory, countInStock, description } = req.body
+   const { name, price, priceWithOff, isAmazingOffer, discount, image, additionalImages, brand, category, subcategory, countInStock, description } = req.body
 
    const cleanDescription = sanitizeHtml(description);
    const product = await Product.findById(req.params.id)
@@ -135,6 +136,7 @@ export const updateProduct = asyncHandler(async (req, res) => {
       product.discount = discount
       product.isAmazingOffer = isAmazingOffer
       product.image = image
+      product.additionalImages = additionalImages
       product.brand = brand
       product.category = category
       product.subcategory = subcategory
