@@ -15,9 +15,12 @@ dotenv.config()
 
 connectDB() // Connect to MongoDB
 
+const dev = process.env.NODE_ENV !== 'production';
+const server = dev ? 'http://localhost:3000' : process.env.WEBSITE_URL;
+
 const app = express()
 app.use(cors({
-   origin: process.env.NODE_ENV === "development" ? "http://localhost:3000" : "https://flashbaz.liara.run",
+   origin: server,
    credentials: true
 }));
 
