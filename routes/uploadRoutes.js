@@ -97,7 +97,6 @@ router.get('/', async (req, res) => {
 
    try {
       const data = await s3.send(new ListObjectsV2Command(params));
-      console.log(data);
       const files = data.Contents.map(file => ({
          key: file.Key,
          url: `${process.env.LIARA_ENDPOINT}/${process.env.LIARA_BUCKET_NAME}/${file.Key}`
