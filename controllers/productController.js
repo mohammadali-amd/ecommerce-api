@@ -111,6 +111,15 @@ export const createProducts = asyncHandler(async (req, res) => {
          name: '',
          slug: ''
       },
+      colors: [{
+         name: '',
+         code: ''
+      }],
+      features: [{
+         title: '',
+         value: '',
+         mainFeature: false
+      }],
       countInStock: 0,
       numReviews: 0,
       description: 'Sample description',
@@ -124,7 +133,7 @@ export const createProducts = asyncHandler(async (req, res) => {
 // @route PUT /api/products/:id
 // @access Private/Admin
 export const updateProduct = asyncHandler(async (req, res) => {
-   const { name, price, priceWithOff, isAmazingOffer, discount, image, additionalImages, brand, category, subcategory, countInStock, description } = req.body
+   const { name, price, priceWithOff, isAmazingOffer, discount, image, additionalImages, brand, category, subcategory, colors, features, countInStock, description } = req.body
 
    const cleanDescription = sanitizeHtml(description);
    const product = await Product.findById(req.params.id)
@@ -140,6 +149,8 @@ export const updateProduct = asyncHandler(async (req, res) => {
       product.brand = brand
       product.category = category
       product.subcategory = subcategory
+      product.colors = colors
+      product.features = features
       product.countInStock = countInStock
       product.description = cleanDescription
 

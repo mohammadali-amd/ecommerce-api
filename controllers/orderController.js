@@ -30,6 +30,7 @@ export const addOrderItems = asyncHandler(async (req, res) => {
          price: matchingItemFromDB.price,
          image: matchingItemFromDB.image,
          qty: itemFromClient.quantity,
+         color: itemFromClient.color,
          _id: undefined,
       };
    });

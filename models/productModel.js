@@ -16,6 +16,18 @@ const reviewSchema = mongoose.Schema(
    }
 );
 
+const colorSchema = mongoose.Schema({
+   name: { type: String, required: true },
+   code: { type: String, required: true },
+   quantity: { type: Number, required: true, default: 0 }
+});
+
+const featureSchema = mongoose.Schema({
+   title: { type: String, required: true },
+   value: { type: String, required: true },
+   mainFeature: { type: Boolean, required: true, default: false }
+});
+
 const productSchema = mongoose.Schema(
    {
       user: {
@@ -52,13 +64,11 @@ const productSchema = mongoose.Schema(
          }
       },
       subcategory: {
-         name: {
-            type: String,
-         },
-         slug: {
-            type: String,
-         }
+         name: { type: String },
+         slug: { type: String }
       },
+      colors: [colorSchema],
+      features: [featureSchema],
       description: {
          type: String,
          required: true,
