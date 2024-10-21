@@ -93,59 +93,86 @@ export const getProduct = asyncHandler(async (req, res) => {
 // @route POST /api/products
 // @access Private/Admin
 export const createProducts = asyncHandler(async (req, res) => {
-   const product = new Product({
-      name: 'Sample name',
-      price: 0,
-      priceWithOff: 0,
-      discount: 0,
-      isAmazingOffer: false,
-      user: req.user._id,
-      image: '/image/sample.jpg',
-      additionalImages: [''],
-      brand: 'Sample brand',
-      category: {
-         name: 'sample',
-         slug: 'sample'
-      },
-      subcategory: {
-         name: '',
-         slug: ''
-      },
-      colors: [{
-         name: '',
-         code: ''
-      }],
-      features: [{
-         title: '',
-         value: '',
-         mainFeature: false
-      }],
-      countInStock: 0,
-      numReviews: 0,
-      description: 'Sample description',
-   })
+   try {
+      const product = new Product({
+         name: 'Sample name',
+         slug: '/sample',
+         metaDescription: 'sample',
+         shortDescription: 'sample',
+         price: 0,
+         priceWithOff: 0,
+         discount: 0,
+         isAmazingOffer: false,
+         user: req.user._id,
+         image: {
+            link: '/image/sample.jpg',
+            alt: 'image'
+         },
+         additionalImages: [{
+            link: '/image/sample.jpg',
+            alt: 'image'
+         }],
+         brand: 'Sample brand',
+         category: {
+            name: 'sample',
+            slug: 'sample'
+         },
+         subcategory: {
+            name: '',
+            slug: ''
+         },
+         colors: [{
+            name: 'سفید',
+            code: '#fff'
+         }],
+         features: [{
+            title: 'sample',
+            value: 'sample',
+            mainFeature: false
+         }],
+         countInStock: 0,
+         numReviews: 0,
+         description: 'Sample description',
+      })
 
-   const createdProduct = await product.save()
-   res.status(201).json(createdProduct)
+      const createdProduct = await product.save()
+      res.status(201).json(createdProduct)
+   } catch (error) {
+      console.error(error);  // Log the error to see what went wrong
+      res.status(500).json({ message: 'Product creation failed', error });
+   }
 })
 
 // @desc Update a product
 // @route PUT /api/products/:id
 // @access Private/Admin
 export const updateProduct = asyncHandler(async (req, res) => {
-   const { name, price, priceWithOff, isAmazingOffer, discount, image, additionalImages, brand, category, subcategory, colors, features, countInStock, description } = req.body
+   const { name, slug, metaDescription, shortDescription, price, priceWithOff, isAmazingOffer, discount, image, additionalImages, brand, category, subcategory, colors, features, countInStock, description } = req.body
 
    const cleanDescription = sanitizeHtml(description);
    const product = await Product.findById(req.params.id)
 
    if (product) {
       product.name = name
+      product.slug = slug
+      product.metaDescription = metaDescription
+      product.shortDescription = shortDescription
       product.price = price
       product.priceWithOff = priceWithOff
       product.discount = discount
       product.isAmazingOffer = isAmazingOffer
-      product.image = image
-      product.additionalImages = additionalImages
+      // product.image = image
+      // product.additionalImages = additionalImages
+      product.image = {
+         link: image.link || product.image.link,
+         alt: image.alt || product.image.alt,
+      };
+      product.additionalImages = additionalImages?.length
+         ? additionalImages.map((img, idx) => ({
+            link: img.link || product.additionalImages[idx]?.link,
+            alt: img.alt || product.additionalImages[idx]?.alt,
+         }))
+         : product.additionalImages;
       product.brand = brand
       product.category = category
       product.subcategory = subcategory

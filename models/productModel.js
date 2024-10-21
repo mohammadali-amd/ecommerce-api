@@ -28,6 +28,11 @@ const featureSchema = mongoose.Schema({
    mainFeature: { type: Boolean, required: true, default: false }
 });
 
+const imageSchema = mongoose.Schema({
+   link: { type: String, required: true },
+   alt: { type: String, required: true }
+});
+
 const productSchema = mongoose.Schema(
    {
       user: {
@@ -39,16 +44,16 @@ const productSchema = mongoose.Schema(
          type: String,
          required: true,
       },
-      image: {
+      slug: {
          type: String,
-         required: true
+         required: true,
       },
-      additionalImages: [
-         {
-            type: String,
-            required: false,
-         }
-      ],
+      metaDescription: {
+         type: String,
+         required: true,
+      },
+      image: imageSchema,
+      additionalImages: [imageSchema],
       brand: {
          type: String,
          required: true,
@@ -69,6 +74,10 @@ const productSchema = mongoose.Schema(
       },
       colors: [colorSchema],
       features: [featureSchema],
+      shortDescription: {
+         type: String,
+         required: true,
+      },
       description: {
          type: String,
          required: true,
